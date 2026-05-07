@@ -1,0 +1,89 @@
+"use client";
+import { AlertDialog, Button, Table } from "@heroui/react";
+import Link from "next/link";
+
+const UsersTable = ({ users, deleteUserAction }) => {
+    const handleDelete = async (userId) => {
+        await deleteUserAction(userId);
+    };
+    return (
+        <Table className="max-w-[800px] w-full mx-auto">
+            <Table.ScrollContainer>
+                <Table.Content aria-label="Team members">
+                    <Table.Header>
+                        <Table.Column isRowHeader>Name</Table.Column>
+                        <Table.Column>Role</Table.Column>
+                        <Table.Column>Email</Table.Column>
+                        <Table.Column>Actions</Table.Column>
+                    </Table.Header>
+                    <Table.Body>
+                        {users.map((user) => (
+                            <Table.Row key={user._id}>
+                                <Table.Cell>{user.name}</Table.Cell>
+                                <Table.Cell>{user.role}</Table.Cell>
+                                <Table.Cell>{user.email}</Table.Cell>
+                                <Table.Cell className={`flex gap-3`}>
+                                    <Link
+                                        href={`/users/${user._id}`}
+                                        className="bg-gray-500 text-white px-4 py-2 rounded"
+                                    >
+                                        Details
+                                    </Link>
+                                    <button className="bg-blue-500 text-white px-4 py-2 rounded">
+                                        Edit
+                                    </button>
+
+                                    <AlertDialog>
+                                        <Button variant="danger">Delete</Button>
+                                        <AlertDialog.Backdrop>
+                                            <AlertDialog.Container>
+                                                <AlertDialog.Dialog className="sm:max-w-[400px]">
+                                                    <AlertDialog.CloseTrigger />
+                                                    <AlertDialog.Header>
+                                                        <AlertDialog.Icon status="danger" />
+                                                        <AlertDialog.Heading>
+                                                            Delete project
+                                                            permanently?
+                                                        </AlertDialog.Heading>
+                                                    </AlertDialog.Header>
+                                                    <AlertDialog.Body>
+                                                        <p>
+                                                            This will
+                                                            permanently delete
+                                                            {user.name}
+                                                        </p>
+                                                    </AlertDialog.Body>
+                                                    <AlertDialog.Footer>
+                                                        <Button
+                                                            slot="close"
+                                                            variant="tertiary"
+                                                        >
+                                                            Cancel
+                                                        </Button>
+                                                        <Button
+                                                            slot="close"
+                                                            variant="danger"
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    user._id,
+                                                                )
+                                                            }
+                                                        >
+                                                            Confirm Delete
+                                                        </Button>
+                                                    </AlertDialog.Footer>
+                                                </AlertDialog.Dialog>
+                                            </AlertDialog.Container>
+                                        </AlertDialog.Backdrop>
+                                    </AlertDialog>
+                                </Table.Cell>
+                            </Table.Row>
+                        ))}
+                    </Table.Body>
+                </Table.Content>
+            </Table.ScrollContainer>
+        </Table>
+    );
+};
+
+export default UsersTable;
