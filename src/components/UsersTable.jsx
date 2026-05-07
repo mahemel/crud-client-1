@@ -29,9 +29,12 @@ const UsersTable = ({ users, deleteUserAction }) => {
                                     >
                                         Details
                                     </Link>
-                                    <button className="bg-blue-500 text-white px-4 py-2 rounded">
+                                    <Link
+                                        href={`/users/${user._id}/edit`}
+                                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                                    >
                                         Edit
-                                    </button>
+                                    </Link>
 
                                     <AlertDialog>
                                         <Button variant="danger">Delete</Button>
